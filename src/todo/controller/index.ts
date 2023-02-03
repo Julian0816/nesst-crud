@@ -4,7 +4,7 @@ import { TodoInstance } from "../model/index";
 import { v4 as uuidv4 } from "uuid";
 
 class TodoController {
-  async create (req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     const id = uuidv4();
     try {
       const record = await TodoInstance.create({ ...req.body, id });
@@ -17,7 +17,7 @@ class TodoController {
       });
     }
   }
-  async readPagination (req: Request, res: Response) {
+  async readPagination(req: Request, res: Response) {
     try {
       const limit = req.query?.limit as number | undefined;
       const offset = req.query?.limit as number | undefined;
@@ -28,7 +28,7 @@ class TodoController {
       return res.json({ msg: "fail to read", status: 500, route: "/read" });
     }
   }
-  async readById (req: Request, res: Response) {
+  async readById(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const record = await TodoInstance.findOne({ where: { id } });
@@ -37,7 +37,7 @@ class TodoController {
       return res.json({ msg: "fail to read", status: 500, route: "/read/:id" });
     }
   }
-  async update (req: Request, res: Response) {
+  async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const record = await TodoInstance.findOne({ where: { id } });
@@ -57,7 +57,7 @@ class TodoController {
       });
     }
   }
-  async delete (req: Request, res: Response) {
+  async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const record = await TodoInstance.findOne({ where: { id } });

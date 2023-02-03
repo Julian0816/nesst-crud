@@ -1,10 +1,10 @@
 import { DataTypes, Model } from "sequelize";
-import db from "../config/database.config";
+import db from "../../config/database.config";
 
 interface TodoAtributes {
-    id:string;
-    title: string;
-    completed: boolean;
+  id: string;
+  title: string;
+  completed: boolean;
 }
 
 export class TodoInstance extends Model<TodoAtributes> {}
@@ -21,13 +21,13 @@ TodoInstance.init(
       allowNull: false,
     },
     completed: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-    }
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
-    sequelize:db,
-    tableName: 'todos'
+    sequelize: db,
+    tableName: "todos",
   }
 );

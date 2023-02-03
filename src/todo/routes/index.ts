@@ -1,6 +1,6 @@
 import express from "express";
 import TodoValidator from "../validator";
-import middleware from "../middleware";
+import middleware from "../../middleware";
 import TodoController from "../controller";
 
 const router = express.Router();

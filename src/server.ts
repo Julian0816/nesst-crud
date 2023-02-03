@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import db from "./config/database.config";
-import todoRouter from "./routes";
+import todoRouter from "./todo/routes";
 // import { TodoInstance } from "./model/index";
 // import { v4 as uuidv4 } from "uuid";
 // import TodoValidator from "./validator";
@@ -22,14 +22,12 @@ const app = express();
 app.use(express.json());
 
 //import router
-app.use('/api/v1', todoRouter)
+app.use("/api/v1", todoRouter);
 
 //Test end-point
 // app.get('/', (req: Request, res: Response) => {
 //     return res.send('This is still up and running')
 // })
-
-
 
 //App.listen
 app.listen(port, () => {
