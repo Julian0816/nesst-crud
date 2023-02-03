@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, query } from "express-validator";
 
 class TodoValidator {
   checkCreateTodo() {
@@ -16,6 +16,19 @@ class TodoValidator {
         .withMessage("The value should be boolean")
         .isIn([0, false])
         .withMessage("The value should be 0 or false"),
+    ];
+  }
+  checkReadTodo() {
+    return [
+        query('limit')
+        .notEmpty()
+        .withMessage("The query limit should not be empty")
+        .isInt({ min:1, max:10})
+        .withMessage("The limit value should be a number between 1-10"),
+        query('offset')
+        .optional()
+        .isNumeric()
+        .withMessage("The value should be a number")
     ];
   }
 }

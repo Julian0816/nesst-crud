@@ -6,7 +6,7 @@ imporove performance using express-validator
 [x] basic express server with typescript
 [x] setup database
 [x] create model
-[] create todo
+[x] create todo
 [] read todo with pagination
 [] read todo with id
 [] update todo

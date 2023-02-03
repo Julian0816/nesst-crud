@@ -27,14 +27,14 @@ app.use(express.json());
 app.post(
   "/create",
   TodoValidator.checkCreateTodo(),
-//   (req: Request, res: Response, next: NextFunction) => {
-//     const error = validationResult(req);
-//     if (!error.isEmpty()) {
-//       return res.json(error);
-//     }
-//     next();
-//   },
-    middleware.handleValidationError,
+  //   (req: Request, res: Response, next: NextFunction) => {
+  //     const error = validationResult(req);
+  //     if (!error.isEmpty()) {
+  //       return res.json(error);
+  //     }
+  //     next();
+  //   },
+  middleware.handleValidationError,
   async (req: Request, res: Response) => {
     const id = uuidv4();
     try {
@@ -46,14 +46,22 @@ app.post(
   }
 );
 
-app.get('/read', async (req: Request, res: Response) => {
+app.get(
+  "/read",
+  TodoValidator.checkReadTodo(),
+  middleware.handleValidationError,
+  async (req: Request, res: Response) => {
     try {
-     const record = await TodoInstance.findAll({ where:{} });
-     return res.json(record);
+      const limit = req.query?.limit as number | undefined;
+      const offset = req.query?.limit as number | undefined;
+      console.log(limit);
+      const record = await TodoInstance.findAll({ where: {}, limit, offset });
+      return res.json(record);
     } catch (e) {
       return res.json({ msg: "fail to read", status: 500, route: "/read" });
     }
-})
+  }
+);
 
 //App.listen
 app.listen(port, () => {
