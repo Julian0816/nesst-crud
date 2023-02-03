@@ -63,6 +63,21 @@ app.get(
   }
 );
 
+app.get(
+  "/read/:id",
+  TodoValidator.checkIdParams(),
+  middleware.handleValidationError,
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const record = await TodoInstance.findOne({ where: { id } });
+      return res.json(record);
+    } catch (e) {
+      return res.json({ msg: "fail to read", status: 500, route: "/read/:id" });
+    }
+  }
+);
+
 //App.listen
 app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`);
