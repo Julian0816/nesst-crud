@@ -7,7 +7,7 @@ imporove performance using express-validator
 [x] setup database
 [x] create model
 [x] create todo
-[] read todo with pagination
-[] read todo with id
-[] update todo
-[] delete todo
+[x] read todo with pagination
+[x] read todo with id
+[x] update todo
+[x] delete todo

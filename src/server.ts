@@ -104,6 +104,30 @@ app.put(
   }
 );
 
+app.delete(
+  "/delete/:id",
+  TodoValidator.checkIdParams(),
+  middleware.handleValidationError,
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const record = await TodoInstance.findOne({ where: { id } });
+
+      if (!record) {
+        return res.json({ msg: "Cannot find existing record" });
+      }
+      const deletedRecord = await record.destroy();
+      return res.json({ record: deletedRecord });
+    } catch (e) {
+      return res.json({
+        msg: "fail to read",
+        status: 500,
+        route: "/delete/:id",
+      });
+    }
+  }
+);
+
 //App.listen
 app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`);
