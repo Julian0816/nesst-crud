@@ -78,6 +78,32 @@ app.get(
   }
 );
 
+app.put(
+  "/update/:id",
+  TodoValidator.checkIdParams(),
+  middleware.handleValidationError,
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const record = await TodoInstance.findOne({ where: { id } });
+
+      if (!record) {
+        return res.json({ msg: "Cannot find existing record" });
+      }
+      const updateRecord = await record.update({
+        completed: !record.getDataValue("completed"),
+      });
+      return res.json({ record: updateRecord });
+    } catch (e) {
+      return res.json({
+        msg: "fail to read",
+        status: 500,
+        route: "/update/:id",
+      });
+    }
+  }
+);
+
 //App.listen
 app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`);
