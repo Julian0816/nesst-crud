@@ -4,8 +4,8 @@ imporove performance using express-validator
 
 [x] Set up typescript for dev
 [x] basic express server with typescript
-[] setup database
-[] create model
+[x] setup database
+[x] create model
 [] create todo
 [] read todo with pagination
 [] read todo with id
