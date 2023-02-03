@@ -1,9 +1,10 @@
-import { TodoInstance } from "./model/index";
 import express, { NextFunction, Request, Response } from "express";
 import db from "./config/database.config";
-import { v4 as uuidv4 } from "uuid";
+// import { TodoInstance } from "./model/index";
+// import { v4 as uuidv4 } from "uuid";
 import TodoValidator from "./validator";
 import middleware from "./middleware";
+import TodoController from './controller';
 
 //Sync database
 db.sync().then(() => {
@@ -35,97 +36,44 @@ app.post(
   //     next();
   //   },
   middleware.handleValidationError,
-  async (req: Request, res: Response) => {
-    const id = uuidv4();
-    try {
-      const record = await TodoInstance.create({ ...req.body, id });
-      return res.json({ record, msg: "Successfully create todo" });
-    } catch (e) {
-      return res.json({ msg: "fail to create", status: 500, route: "/create" });
-    }
-  }
+//   async (req: Request, res: Response) => {
+//     const id = uuidv4();
+//     try {
+//       const record = await TodoInstance.create({ ...req.body, id });
+//       return res.json({ record, msg: "Successfully create todo" });
+//     } catch (e) {
+//       return res.json({ msg: "fail to create", status: 500, route: "/create" });
+//     }
+//   }
+    TodoController.create,
 );
 
 app.get(
   "/read",
   TodoValidator.checkReadTodo(),
   middleware.handleValidationError,
-  async (req: Request, res: Response) => {
-    try {
-      const limit = req.query?.limit as number | undefined;
-      const offset = req.query?.limit as number | undefined;
-      console.log(limit);
-      const record = await TodoInstance.findAll({ where: {}, limit, offset });
-      return res.json(record);
-    } catch (e) {
-      return res.json({ msg: "fail to read", status: 500, route: "/read" });
-    }
-  }
+  TodoController.readPagination,
 );
 
 app.get(
   "/read/:id",
   TodoValidator.checkIdParams(),
   middleware.handleValidationError,
-  async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const record = await TodoInstance.findOne({ where: { id } });
-      return res.json(record);
-    } catch (e) {
-      return res.json({ msg: "fail to read", status: 500, route: "/read/:id" });
-    }
-  }
+  TodoController.readById,
 );
 
 app.put(
   "/update/:id",
   TodoValidator.checkIdParams(),
   middleware.handleValidationError,
-  async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const record = await TodoInstance.findOne({ where: { id } });
-
-      if (!record) {
-        return res.json({ msg: "Cannot find existing record" });
-      }
-      const updateRecord = await record.update({
-        completed: !record.getDataValue("completed"),
-      });
-      return res.json({ record: updateRecord });
-    } catch (e) {
-      return res.json({
-        msg: "fail to read",
-        status: 500,
-        route: "/update/:id",
-      });
-    }
-  }
+  TodoController.update,
 );
 
 app.delete(
   "/delete/:id",
   TodoValidator.checkIdParams(),
   middleware.handleValidationError,
-  async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const record = await TodoInstance.findOne({ where: { id } });
-
-      if (!record) {
-        return res.json({ msg: "Cannot find existing record" });
-      }
-      const deletedRecord = await record.destroy();
-      return res.json({ record: deletedRecord });
-    } catch (e) {
-      return res.json({
-        msg: "fail to read",
-        status: 500,
-        route: "/delete/:id",
-      });
-    }
-  }
+  TodoController.delete,
 );
 
 //App.listen
